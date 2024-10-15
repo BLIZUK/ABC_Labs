@@ -327,11 +327,11 @@ void interFace() {
 
 int main() {
 	system("chcp 1251 > nul");
-    //step4();
-   // step4();
-   // step5();
-    //step6(); 
-    //choiceInt();
+    step4();
+    step4();
+    step5();
+    step6(); 
+    choiceInt();
     individ();
 	return 0;
 }
