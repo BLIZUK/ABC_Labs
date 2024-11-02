@@ -39,8 +39,8 @@ void point2() {
 	cout << "Разница их составила - " << "| " << tick64_3 - tick64_1 << " | | " << tick64_4 - tick64_2 << " |" << endl << endl;
 
 	__asm {
-		pop EBX  // Извлечение регистров из стека.
-		pop ECX
+		pop ECX  // Извлечение регистров из стека.
+		pop EBX // Изменение регистрво на правильный порядок. Причина - была не правильная работа со стеком.
 
 		mov tick32_3, EBX
 		mov tick32_4, ECX
@@ -121,15 +121,14 @@ long double point4(const int counter, const double FREQ, int flag) {
 		xor eax, eax      // Обнуление регистра EAX
 		cycle_start :
 		inc eax           // Увеличение значения в регистре EAX на 1
-			loop cycle_start  // Переход к метке, пока ECX не станет нулевым
-			mov i, eax        // Сохранение значения EAX в переменную i
-			rdtsc				// Инструкция rdtsc заполняет ->
-			mov tick32_3, EAX	// -> регистр EAX младшеми 32 битами ->
-			mov tick32_4, EDX	// -> регистр EDX старшеми 32 битами.
+		loop cycle_start  // Переход к метке, пока ECX не станет нулевым
+		mov i, eax        // Сохранение значения EAX в переменную i
+		rdtsc				// Инструкция rdtsc заполняет ->
+		mov tick32_3, EAX	// -> регистр EAX младшеми 32 битами ->
+		mov tick32_4, EDX	// -> регистр EDX старшеми 32 битами.
 	};
 
 	tick64_2 = ((unsigned __int64)tick32_4 << 32) | tick32_3;
-	//time = ((tick64_2 - tick64_1) / pow(10, 8)) / FREQ;
 	time = ((tick64_2 - tick64_1) * 1000) / FREQ;
 	if (flag) {
 		unsigned __int64 t = (tick64_2 - tick64_1) / 10 / time;
@@ -164,7 +163,7 @@ int main() {
 	cout << "\nПункт 4, счетчик циклов - (10^5)" << endl;
 	cout << "Время затраченное на цикл - " << point4(counter_2, FREQ, 0) << " миллисекунд.";
 	cout << "\nПункт 4, счетчик циклов - (10^7)" << endl;
-	cout << "Время затраченное на цикл - " << point4(counter_2, FREQ, 0) << " миллисекунд." << endl;
+	cout << "Время затраченное на цикл - " << point4(counter_3, FREQ, 0) << " миллисекунд." << endl;
 	cout << "\n---------------------------------------------------------------------------------------------------------------\n";
 	point5(counter_2, FREQ);
 
